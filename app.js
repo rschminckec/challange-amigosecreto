@@ -70,4 +70,5 @@ function sortearAmigo() {
     
     sorteado = true;
     renderizarAmigos(); 
+}
 
