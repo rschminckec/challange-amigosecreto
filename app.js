@@ -1,40 +1,63 @@
-let amigo = [];
+let amigos = [];
 
-function agregarAmigo () {
+function agregarAmigo() {
     let inputAmigo = document.getElementById('amigo');
-    let nombreAmigo = inputAmigo.value;
+    let nombreAmigo = inputAmigo.value.trim(); // Evitar espacios vacíos
+
     if (!nombreAmigo) {
+        alert('Debes ingresar un nombre válido.');
         return;
     }
 
-amigo.push(nombreAmigo);
-inputAmigo.value = '';
-inputAmigo.focus();
-rendeizarAmigos();
-console.log(amigo);
+    amigos.push(nombreAmigo);
+    inputAmigo.value = '';
+    inputAmigo.focus();
+    renderizarAmigos();
+    console.log(amigos);
 }
 
-function rendeizarAmigos() {
+function renderizarAmigos() {
     let listaAmigos = document.getElementById('listaAmigos');
     listaAmigos.innerHTML = '';
 
-    for (let i = 0; i < amigo.length; i++) {
+    amigos.forEach((amigo, index) => {
         let li = document.createElement('li');
-        li.textContent = amigo[i];
+        li.textContent = amigo;
+
+        // Botón para eliminar manualmente un amigo
+        let btnEliminar = document.createElement('button');
+        btnEliminar.textContent = "❌";
+        btnEliminar.style.marginLeft = "10px";
+        btnEliminar.onclick = function () {
+            eliminarAmigo(index);
+        };
+
+        li.appendChild(btnEliminar);
         listaAmigos.appendChild(li);
-    }
+    });
+}
+
+function eliminarAmigo(index) {
+    amigos.splice(index, 1);
+    renderizarAmigos();
 }
 
 function sortearAmigo() {
-    if (amigo.length === 0) {
-        alert('Debes agregar al menos dos amigos');
+    if (amigos.length === 0) {
+        alert('Debes agregar al menos un amigo');
         return;
     }
 
-let amigoSorteado = amigo[Math.floor(Math.random() * amigo.length)];
-let resultado = document.getElementById('resultado');
-resultado.innerHTML = "Tu amigo secreto es" + amigoSorteado;    
+    let indiceSorteado = Math.floor(Math.random() * amigos.length);
+    let amigoSorteado = amigos[indiceSorteado];
 
-let limpiarLista = document.getElementById('limpiarLista');
-limpiarLista.innerHTML = '';
+    // Eliminar al amigo sorteado del array
+    amigos.splice(indiceSorteado, 1);
+
+    let resultado = document.getElementById('resultado');
+    resultado.innerHTML = "Tu amigo secreto es: " + amigoSorteado;
+
+    
+    renderizarAmigos();
 }
+
